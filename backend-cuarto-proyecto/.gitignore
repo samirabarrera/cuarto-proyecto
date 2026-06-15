@@ -1,0 +1,37 @@
+# Dependencias de Node
+node_modules/
+
+# Variables de entorno (¡Muy crítico para contraseñas y llaves de BD!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Compilación de código (Si usas TypeScript o build scripts)
+dist/
+build/
+out/
+
+# Logs de error y ejecución
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de base de datos local / SQLite / Temporales
+*.db
+*.sqlite
+.pids
+*.pid
+*.seed
+*.pid.lock
+
+# Archivos del Sistema Operativo e IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Docker
+docker-compose.yml

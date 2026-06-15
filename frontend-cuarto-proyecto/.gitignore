@@ -1,0 +1,32 @@
+# Dependencias de Node
+node_modules/
+/jspm_packages/
+
+# Carpetas de producción / compilación (Vite, React, Next.js)
+dist/
+build/
+.next/
+out/
+
+# Variables de entorno (¡Datos sensibles!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Caché de herramientas de desarrollo (Vite, ESLint, Turbo)
+.vite/
+.eslintcache
+.turbo/
+.pnpm-store/
+
+# Cobertura de pruebas (Testing)
+coverage/
+
+# Archivos del Sistema Operativo e IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

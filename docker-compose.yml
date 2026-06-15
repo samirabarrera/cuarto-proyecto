@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # BASE DE DATOS (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-proyecto_final}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password123}
+      POSTGRES_DB: ${DB_NAME:-expense_tracker}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. BACKEND (Node.js con Express)
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://${DB_USER:-galileo_user}:${DB_PASSWORD:-password123}@db:5432/${DB_NAME:-proyecto_final_db}
+      PORT: 4000
+      JWT_SECRET: ${JWT_SECRET:-clave_secreta_para_proyecto_final123}
+
+  # 3. FRONTEND (Vite con React)
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - "5173:80" # Puerto por defecto de Vite
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:4000}
+
+volumes:
+  postgres_data:

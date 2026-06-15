@@ -1,0 +1,83 @@
+/* =====================================================
+   navbar.css — Estilos de la barra de navegación
+   ===================================================== */
+
+.ff-navbar {
+  background: rgba(10,10,20,0.88) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+}
+
+.ff-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--primary-light), var(--info));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ff-brand .brand-icon {
+  font-size: 1.6rem;
+  -webkit-text-fill-color: var(--primary-light);
+}
+
+.ff-nav-link {
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 0.95rem;
+}
+
+.ff-nav-link:hover {
+  color: var(--text-primary) !important;
+  background: rgba(99,102,241,0.12) !important;
+}
+
+.ff-nav-link.active {
+  color: var(--primary-light) !important;
+  background: rgba(99,102,241,0.18) !important;
+}
+
+/* Socket status indicator */
+.socket-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+.socket-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: var(--transition);
+}
+
+.socket-dot.connected {
+  background: var(--success);
+  animation: pulse-dot 2s ease infinite;
+}
