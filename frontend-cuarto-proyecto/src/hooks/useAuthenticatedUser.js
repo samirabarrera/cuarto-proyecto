@@ -7,7 +7,11 @@ export function useAuthenticatedUser() {
 
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
-      getAccessTokenSilently()
+      getAccessTokenSilently({
+        authorizationParams: {
+          audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+        },
+      })
         .then(token => setAccessToken(token))
         .catch(console.error);
     }

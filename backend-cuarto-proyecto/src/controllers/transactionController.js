@@ -35,12 +35,8 @@ export const getTransactions = async (req, res) => {
         t.date,
         t.notes,
         t.created_at,
-        t.updated_at,
-        COALESCE(c.name,  'Sin categoría') AS category_name,
-        COALESCE(c.icon,  'bi-question')   AS category_icon,
-        COALESCE(c.color, '#94a3b8')       AS category_color
+        t.updated_at
       FROM transactions t
-      LEFT JOIN categories c ON t.category_id = c.id
       WHERE ${conditions.join(' AND ')}
       ORDER BY t.date DESC, t.created_at DESC
     `;
@@ -77,20 +73,10 @@ export const createTransaction = async (req, res) => {
     );
 
     const tx = rows[0];
-    const { rows: catRows } = await query(
-      `SELECT name, icon, color FROM categories WHERE id = $1`,
-      [tx.category_id]
-    );
-    const cat = catRows[0];
 
     res.status(201).json({
       success: true,
-      data: {
-        ...tx,
-        category_name:  cat?.name  ?? 'Sin categoría',
-        category_icon:  cat?.icon  ?? 'bi-question',
-        category_color: cat?.color ?? '#94a3b8',
-      },
+      data: tx,
     });
   } catch (err) {
     console.error('[createTransaction]', err);
@@ -139,20 +125,10 @@ export const updateTransaction = async (req, res) => {
     );
 
     const tx = rows[0];
-    const { rows: catRows } = await query(
-      `SELECT name, icon, color FROM categories WHERE id = $1`,
-      [tx.category_id]
-    );
-    const cat = catRows[0];
 
     res.json({
       success: true,
-      data: {
-        ...tx,
-        category_name:  cat?.name  ?? 'Sin categoría',
-        category_icon:  cat?.icon  ?? 'bi-question',
-        category_color: cat?.color ?? '#94a3b8',
-      },
+      data: tx,
     });
   } catch (err) {
     console.error('[updateTransaction]', err);

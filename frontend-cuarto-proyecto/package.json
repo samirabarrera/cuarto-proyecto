@@ -10,10 +10,11 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.18.0",
-    "axios": "^1.17.0",
+    "axios": "^1.18.0",
     "boostrap": "^2.0.0",
     "chart.js": "^4.5.1",
     "dotenv": "^17.4.2",
+    "formik": "^2.4.9",
     "nodemon": "^3.1.14",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.3.1",
@@ -22,7 +23,8 @@
     "recharts": "^3.8.1",
     "socket.io-client": "^4.7.5",
     "socketio": "^1.0.0",
-    "websocket": "^1.0.35"
+    "websocket": "^1.0.35",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",

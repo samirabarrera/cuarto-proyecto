@@ -1,7 +1,11 @@
-FROM node:22-alpine AS build
+FROM node:22-alpine
 WORKDIR /app
+
+# Instalar dependencias primero (mejor cache de Docker)
 COPY package*.json ./
-RUN npm install
+RUN npm ci --only=production
+
 COPY . .
-EXPOSE 4000
-CMD ["npm", "start"]
+
+EXPOSE 5000
+CMD ["node", "server.js"]

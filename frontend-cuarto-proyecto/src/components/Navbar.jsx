@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import '../styles/navbar.css'
+import '../styles/Navbar.css'
 
 const VIEWS = [
   { id: 'dashboard',     label: 'Dashboard',     icon: 'bi-grid-fill' },
   { id: 'transactions',  label: 'Transacciones', icon: 'bi-arrow-left-right' },
-  { id: 'goals',         label: 'Metas',         icon: 'bi-bullseye' },
 ]
 
-export default function Navbar({ activeView, onNavigate, isConnected }) {
+export default function Navbar({ activeView, onNavigate }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -46,12 +45,6 @@ export default function Navbar({ activeView, onNavigate, isConnected }) {
               </li>
             ))}
           </ul>
-
-          {/* Socket status */}
-          <div className="socket-status ms-md-3 mt-2 mt-md-0">
-            <span className={`socket-dot ${isConnected ? 'connected' : ''}`} />
-            {isConnected ? 'En vivo' : 'Desconectado'}
-          </div>
         </div>
       </div>
     </nav>

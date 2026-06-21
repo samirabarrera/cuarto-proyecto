@@ -16,22 +16,18 @@ export const setAuthToken = (token) => {
   }
 }
 
-/* ── Transactions / Expenses ───────────────────── */
+/* ── Transactions ───────────────────── */
 export const getTransactions = (params = {}) =>
-  api.get('/expenses', { params })
+  api.get('/transactions', { params })
 
 export const createTransaction = (data) =>
-  api.post('/expenses', data)
+  api.post('/transactions', data)
 
 export const updateTransaction = (id, data) =>
-  api.put(`/expenses/${id}`, data)
+  api.put(`/transactions/${id}`, data)
 
 export const deleteTransaction = (id) =>
-  api.delete(`/expenses/${id}`)
-
-/* ── Categories */
-export const getCategories = (params = {}) =>
-  api.get('/category', { params })
+  api.delete(`/transactions/${id}`)
 
 /* ── Summary  */
 export const getSummary = (month) =>
@@ -42,19 +38,6 @@ export const getSummaryByCategory = (month, type = 'expense') =>
 
 export const getMonthlyTrend = () =>
   api.get('/summary/monthly-trend')
-
-/* ── Goals */
-export const getGoals = () =>
-  api.get('/goals')
-
-export const createGoal = (data) =>
-  api.post('/goals', data)
-
-export const updateGoal = (id, data) =>
-  api.put(`/goals/${id}`, data)
-
-export const deleteGoal = (id) =>
-  api.delete(`/goals/${id}`)
 
 /*TIPS*/
 export const getDailyTip = () =>

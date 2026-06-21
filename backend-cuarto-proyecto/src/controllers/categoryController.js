@@ -8,7 +8,7 @@ export const getCategories = async (req, res) => {
     const user_id = req.user.id;
 
     const { rows } = await query(
-      `SELECT id, user_id, name, icon, color, created_at
+      `SELECT id, user_id, name, type, icon, color, created_at
        FROM categories
        WHERE user_id IS NULL OR user_id = $1
        ORDER BY name ASC`,
@@ -26,17 +26,17 @@ export const getCategories = async (req, res) => {
 export const createCategory = async (req, res) => {
   try {
     const user_id = req.user.id;
-    const { name, icon = 'bi-tag', color = '#6366f1' } = req.body;
+    const { name, type = 'expense', icon = 'bi-tag', color = '#6366f1' } = req.body;
 
     if (!name) {
       return res.status(400).json({ success: false, error: 'El nombre es requerido.' });
     }
 
     const { rows } = await query(
-      `INSERT INTO categories (user_id, name, icon, color)
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO categories (user_id, name, type, icon, color)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
-      [user_id, name, icon, color]
+      [user_id, name, type, icon, color]
     );
 
     res.status(201).json({ success: true, data: rows[0] });
@@ -51,7 +51,7 @@ export const updateCategory = async (req, res) => {
   try {
     const user_id = req.user.id;
     const { id }  = req.params;
-    const { name, icon, color } = req.body;
+    const { name, type, icon, color } = req.body;
 
     const { rows: existing } = await query(
       `SELECT * FROM categories WHERE id = $1 AND user_id = $2`,
@@ -65,11 +65,12 @@ export const updateCategory = async (req, res) => {
     const { rows } = await query(
       `UPDATE categories
        SET name  = $1,
-           icon  = $2,
-           color = $3
-       WHERE id = $4 AND user_id = $5
+           type  = $2,
+           icon  = $3,
+           color = $4
+       WHERE id = $5 AND user_id = $6
        RETURNING *`,
-      [name ?? prev.name, icon ?? prev.icon, color ?? prev.color, id, user_id]
+      [name ?? prev.name, type ?? prev.type, icon ?? prev.icon, color ?? prev.color, id, user_id]
     );
 
     res.json({ success: true, data: rows[0] });

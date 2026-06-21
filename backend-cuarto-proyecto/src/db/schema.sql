@@ -16,10 +16,10 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 -- Auth0 gestiona la sesión; aquí solo se guarda el perfil.
 -- =======================================================
 CREATE TABLE IF NOT EXISTS users (
-    id          UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
-    email       VARCHAR(255) NOT NULL UNIQUE,
+    id          TEXT         PRIMARY KEY,          -- Auth0 sub (ej: "auth0|abc123")
+    email       VARCHAR(255) UNIQUE,                    -- nullable: Auth0 access tokens no siempre incluyen email
     name        VARCHAR(255),
-    picture     TEXT,                           -- URL avatar provisto por Auth0
+    picture     TEXT,                              -- URL avatar provisto por Auth0
     created_at  TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
     updated_at  TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );
@@ -35,7 +35,7 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 -- =======================================================
 CREATE TABLE IF NOT EXISTS categories (
     id          UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id     UUID         REFERENCES users(id) ON DELETE CASCADE,
+    user_id     TEXT         REFERENCES users(id) ON DELETE CASCADE,
     name        VARCHAR(100) NOT NULL,
     icon        VARCHAR(100) NOT NULL DEFAULT 'bi-tag',
     color       VARCHAR(20)  NOT NULL DEFAULT '#6366f1',
@@ -59,7 +59,7 @@ CREATE INDEX IF NOT EXISTS idx_categories_type    ON categories(type);
 -- =======================================================
 CREATE TABLE IF NOT EXISTS transactions (
     id              UUID           PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id         UUID           NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    user_id         TEXT           NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     category_id     UUID           REFERENCES categories(id) ON DELETE SET NULL,
     description     VARCHAR(255)   NOT NULL,
     amount          NUMERIC(15, 2) NOT NULL CHECK (amount > 0),
@@ -78,30 +78,6 @@ CREATE INDEX IF NOT EXISTS idx_transactions_category ON transactions(category_id
 -- Índice compuesto para filtros por usuario + mes
 CREATE INDEX IF NOT EXISTS idx_transactions_user_date
     ON transactions(user_id, date DESC);
-
-
--- =======================================================
--- TABLA: goals
--- Metas de ahorro del usuario.
--- =======================================================
-CREATE TABLE IF NOT EXISTS goals (
-    id              UUID           PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id         UUID           NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    name            VARCHAR(255)   NOT NULL,
-    target_amount   NUMERIC(15, 2) NOT NULL CHECK (target_amount > 0),
-    current_amount  NUMERIC(15, 2) NOT NULL DEFAULT 0 CHECK (current_amount >= 0),
-    deadline        DATE,
-    color           VARCHAR(20)    NOT NULL DEFAULT '#6366f1',
-    created_at      TIMESTAMPTZ    NOT NULL DEFAULT NOW(),
-    updated_at      TIMESTAMPTZ    NOT NULL DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_goals_user_id ON goals(user_id);
-
-
--- tips: data estática gestionada en src/controllers/tipController.js
--- No requiere tabla en BD.
-
 
 -- =======================================================
 -- FUNCIÓN + TRIGGERS: auto-actualizar updated_at
@@ -122,9 +98,8 @@ CREATE OR REPLACE TRIGGER trg_transactions_updated_at
     BEFORE UPDATE ON transactions
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
-CREATE OR REPLACE TRIGGER trg_goals_updated_at
-    BEFORE UPDATE ON goals
-    FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+
 
 
 -- =======================================================
