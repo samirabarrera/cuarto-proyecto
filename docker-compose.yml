@@ -1,43 +1,61 @@
 version: '3.8'
 
 services:
-  # BASE DE DATOS (PostgreSQL)
+
+  # ── BASE DE DATOS ─────────────────────────────────────────
   db:
     image: postgres:15-alpine
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER:-proyecto_final}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-password123}
-      POSTGRES_DB: ${DB_NAME:-expense_tracker}
+      POSTGRES_USER:     ${DB_USER:-proyecto_final}
+      POSTGRES_PASSWORD: ${DB_PASS:-password123}
+      POSTGRES_DB:       ${DB_NAME:-expense_tracker}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./backend-cuarto-proyecto/src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-proyecto_final} -d ${DB_NAME:-expense_tracker}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
-  # 2. BACKEND (Node.js con Express)
+  # ── BACKEND ───────────────────────────────────────────────
   backend:
-    build: ./backend
+    build: ./backend-cuarto-proyecto
     restart: always
     ports:
       - "5000:5000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      DATABASE_URL: postgres://${DB_USER:-proyecto_final}:${DB_PASSWORD:-password123}@db:5432/${DB_NAME:-expense_tracker}
-      JWT_SECRET: ${JWT_SECRET:-clave_secreta_para_proyecto_final123}
+      PORT:           5000
+      DB_HOST:        db
+      DB_USER:        ${DB_USER:-proyecto_final}
+      DB_PASS:        ${DB_PASS:-password123}
+      DB_NAME:        ${DB_NAME:-expense_tracker}
+      DB_PORT:        5432
+      FRONTEND_URL:   ${FRONTEND_URL:-http://localhost:5173}
+      AUTH0_DOMAIN:   ${AUTH0_DOMAIN}
+      AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
+      AUTH0_AUDIENCE:  ${AUTH0_AUDIENCE}
 
-  # 3. FRONTEND (Vite con React)
+  # ── FRONTEND ──────────────────────────────────────────────
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend-cuarto-proyecto
+      args:
+        VITE_AUTH0_DOMAIN:    ${AUTH0_DOMAIN}
+        VITE_AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
+        VITE_AUTH0_AUDIENCE:  ${AUTH0_AUDIENCE}
+        VITE_API_URL:         ${VITE_API_URL:-http://localhost:5000}
     restart: always
     ports:
-      - "5173:80" # Puerto por defecto de Vite
+      - "5173:80"
     depends_on:
       - backend
-    environment:
-      - VITE_API_URL=${VITE_API_URL:-http://localhost:4000}
-      - VITE_AUTH0_DOMAIN=${VITE_AUTH0_DOMAIN:-dev-mz3fzzdfq0lxvcto.us.auth0.com}
-      - VITE_AUTH0_CLIENT_ID=${VITE_AUTH0_CLIENT_ID:-wzvvWLW6WXMaRqoEnV578DoWLArICFJO}
 
 volumes:
   postgres_data:

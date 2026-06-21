@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
 import '../styles/Navbar.css'
 
 const VIEWS = [
@@ -7,6 +8,7 @@ const VIEWS = [
 ]
 
 export default function Navbar({ activeView, onNavigate }) {
+  const { logout } = useAuth0()
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -45,6 +47,17 @@ export default function Navbar({ activeView, onNavigate }) {
               </li>
             ))}
           </ul>
+
+          {/* Logout button — derecha */}
+          <button
+            className="ff-logout-btn"
+            onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+            id="btn-logout"
+            title="Cerrar sesión"
+          >
+            <i className="bi bi-box-arrow-right" />
+            Salir
+          </button>
         </div>
       </div>
     </nav>

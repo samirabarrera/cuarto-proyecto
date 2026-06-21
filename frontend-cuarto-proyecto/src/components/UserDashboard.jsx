@@ -4,6 +4,7 @@ import '../styles/variables.css';
 import '../styles/UserDashboard.css';
 import Navbar from './Navbar';
 import Transactions from './Transactions';
+import GraficaResumen from './GraficaResumen';
 import Profile from '../Profile';
 import LogoutButton from '../LogoutButton';
 import socket from '../hooks/socket';
@@ -95,17 +96,25 @@ function UserDashboard() {
       <h2 className="section-title">Resumen Financiero</h2>
       
       {datosFinancieros ? (
-        <div className="metrics-grid">
-          <div className="metric-card income">
-            <h3>Ingresos</h3>
-            <p>${datosFinancieros.totalIngresos || 0}</p>
+        <>
+          <div className="metrics-grid">
+            <div className="metric-card income">
+              <h3>Ingresos</h3>
+              <p>${datosFinancieros.totalIngresos || 0}</p>
+            </div>
+
+            <div className="metric-card expenses">
+              <h3>Gastos</h3>
+              <p>${datosFinancieros.totalGastos || 0}</p>
+            </div>
           </div>
-          
-          <div className="metric-card expenses">
-            <h3>Gastos</h3>
-            <p>${datosFinancieros.totalGastos || 0}</p>
-          </div>
-        </div>
+
+          {/* ── Gráfica Donut + Barra de Rango ── */}
+          <GraficaResumen
+            totalIngresos={datosFinancieros.totalIngresos}
+            totalGastos={datosFinancieros.totalGastos}
+          />
+        </>
       ) : (
         <p className="waiting-message">Esperando datos del servidor...</p>
       )}
