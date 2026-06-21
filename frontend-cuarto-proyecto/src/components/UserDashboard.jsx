@@ -76,11 +76,9 @@ function UserDashboard() {
       socket.off('disconnect', onDisconnect);
       socket.off('finance_update', onUpdate);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleToast = (msg, type) => {
-    // Componente Toast simple nativo o un alert
     alert(msg);
   };
 

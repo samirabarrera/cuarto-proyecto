@@ -91,7 +91,7 @@
 
 .ff-modal .btn-close { filter: invert(1) brightness(0.6); }
 
-/* ── Form controls ──────────────────────────────────── */
+/* ── Form controls */
 .ff-form-control,
 .ff-select {
   background: var(--bg-input) !important;
@@ -124,7 +124,7 @@
   display: block;
 }
 
-/* ── Buttons ────────────────────────────────────────── */
+/* ── Buttons */
 .btn-ff-primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   border: none;
@@ -215,7 +215,7 @@
   color: var(--text-primary);
 }
 
-/* ── Table wrapper card ─────────────────────────────── */
+/* ── Table wrapper card */
 .table-card {
   background: var(--bg-card);
   border: 1px solid var(--border);

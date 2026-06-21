@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  # ── BASE DE DATOS ─────────────────────────────────────────
+  # BASE DE DATOS
   db:
     image: postgres:15-alpine
     restart: always
@@ -21,7 +21,7 @@ services:
       timeout: 5s
       retries: 10
 
-  # ── BACKEND ───────────────────────────────────────────────
+  # ── BACKEND
   backend:
     build: ./backend-cuarto-proyecto
     restart: always
@@ -42,7 +42,7 @@ services:
       AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
       AUTH0_AUDIENCE:  ${AUTH0_AUDIENCE}
 
-  # ── FRONTEND ──────────────────────────────────────────────
+  # ── FRONTEND
   frontend:
     build:
       context: ./frontend-cuarto-proyecto

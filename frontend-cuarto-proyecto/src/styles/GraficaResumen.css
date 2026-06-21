@@ -1,9 +1,4 @@
-/* ════════════════════════════════════════════════
-   GraficaResumen.css
-   Estilos para el componente Donut + Barra de Rango
-   ════════════════════════════════════════════════ */
-
-/* ── Tarjeta contenedora ─────────────────────── */
+/* ── Tarjeta contenedora */
 .gr-card {
   background: var(--bg-card, #ffffff);
   border: 1.5px solid var(--border, #fed7e2);
@@ -30,7 +25,7 @@
   flex-wrap: wrap;
 }
 
-/* ── Donut ───────────────────────────────────── */
+/* ── Donut */
 .gr-donut-wrapper {
   position: relative;
   display: flex;
@@ -71,7 +66,7 @@
   fill: var(--text-muted, #a0aec0);
 }
 
-/* ── Leyendas ────────────────────────────────── */
+/* ── Leyendas */
 .gr-leyenda {
   display: flex;
   align-items: flex-start;
@@ -112,7 +107,7 @@
   margin-top: 1px;
 }
 
-/* ── Divisor vertical ────────────────────────── */
+/* ── Divisor vertical */
 .gr-divisor {
   width: 1.5px;
   align-self: stretch;
@@ -121,7 +116,7 @@
   flex-shrink: 0;
 }
 
-/* ── Barra de rango ──────────────────────────── */
+/* ── Barra de rango */
 .gr-rango-wrapper {
   flex: 1;
   min-width: 220px;

@@ -23,10 +23,10 @@ function GraficaResumen({ totalIngresos = 0, totalGastos = 0 }) {
   const dashGasto  = porcentajeGasto * circunf;
   const dashSaldo  = porcentajeSaldo * circunf;
 
-  // Comenzamos el arco de gasto desde las 12 en punto (−90°)
+  // Donde comienza el arco de la dona (rotación para que inicie en la parte superior)
   const rotacionBase = -90;
 
-  // ── Barra de rango ───────────────────────────────────────────────────────
+  // Barra de rango
   const pctBarra = totalIngresos > 0 ? (gastoSeguro / totalIngresos) * 100 : 0;
 
   return (

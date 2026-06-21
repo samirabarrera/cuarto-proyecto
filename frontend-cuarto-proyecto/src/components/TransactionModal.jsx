@@ -114,7 +114,7 @@ export default function TransactionModal({ formik, editingTx, closeModal, showMo
                   >
                     <option value="">Selecciona una categoría</option>
                     {filteredCats.map(c => (
-                      <option key={c.id} value={c.id}>{(c.icon || '').replace('bi-', '')} {c.name}</option>
+                      <option key={c.id} value={c.id}>{c.name}</option>
                     ))}
                   </select>
                   {formik.touched.category_id && formik.errors.category_id && (

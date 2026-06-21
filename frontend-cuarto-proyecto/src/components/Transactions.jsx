@@ -75,7 +75,7 @@ export default function Transactions({ socketEvents, onToast, accessToken }) {
   }, [socketEvents]);
 
   async function fetchTransactions() {
-    if (!accessToken) return;   // 🔒 Nunca llamar sin token
+    if (!accessToken) return;   // Nunca llamar sin token
     setLoading(true);
     try {
       const params = {};
